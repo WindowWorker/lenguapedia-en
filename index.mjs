@@ -9,7 +9,6 @@ let hostList = [];
 hostList.push(hostTarget);
 let server = http.createServer(availReq(onRequest));
 
-
 server.listen(3000);
 maintain(server);
 
