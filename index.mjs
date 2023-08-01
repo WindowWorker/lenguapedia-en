@@ -29,7 +29,7 @@ async function onRequest(req, res) {
 
   if (pat == '/en-link-resolver.v.js') {
 
-          let resp=await fetch('https://files-servleteer.vercel.app/lenguapedia/en'+req.url);
+    let resp=await fetch('https://files-servleteer.vercel.app/lenguapedia/en'+req.url);
     let file = Buffer.from(await(resp).arrayBuffer());
     res.setHeader('Content-Type',resp.headers.get('Content-Type'));
     return res.endAvail(file);
@@ -46,7 +46,7 @@ async function onRequest(req, res) {
   if (pat == '/wiki.css') {
 
 
-        let resp=await fetch('https://files-servleteer.vercel.app/webgpt'+req.url);
+        let resp=await fetch('https://files-servleteer.vercel.app/lenguapedia/en'+req.url);
     if(req.url=='/'||req.url==''){req.url='/index.html';}
     let file = Buffer.from(await(resp).arrayBuffer());
   res.setHeader('Content-Type',resp.headers.get('Content-Type'));
@@ -118,6 +118,9 @@ async function onRequest(req, res) {
 
 
     res.setHeader('content-type', ct);
+      res.setHeader('Vercel-CDN-Cache-Control', 'max-age=86400');
+  res.setHeader('CDN-Cache-Control', 'max-age=86400');
+  res.setHeader('Cache-Control', 'max-age=86400');
 
     if ((ct) && (!(ct.includes('image')&&(!ct.includes('svg')))) && (!ct.includes('video')) && (!ct.includes('audio'))) {
 
