@@ -13,6 +13,10 @@ server.listen(3000);
 maintain(server);
 
 async function onRequest(req, res) {
+  
+  req.socket.setNoDelay();
+  res.socket.setNoDelay();
+  
   res=availRes(res);
   const hostProxy = req.headers['host'];
 
