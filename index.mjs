@@ -141,9 +141,13 @@ async function onRequest(req, res) {
         }
         return res.endAvail(resBody);
       }
-      let resNewBody = resBody.replace('<head>',
-        `<head>
-        <script src="https://`+ hostProxy + `/en-link-resolver.v.js" host-list="` + btoa(JSON.stringify(hostList)) + `"></script>
+
+      
+  let bodyTagHead = resBody.match(/<body[^>]*>/)[0];
+
+      let resNewBody = resBody.replace(/<body[^>]*>/,
+      bodyTagHead +
+        `<script src="https://`+ hostProxy + `/en-link-resolver.v.js" host-list="` + btoa(JSON.stringify(hostList)) + `"></script>
      <script src="https://`+ hostProxy + `/fetch-redirect.cjs"></script>  <link rel="stylsheet" href="/wiki.css">`);
       return res.endAvail(resNewBody);
 
