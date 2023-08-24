@@ -3,6 +3,7 @@ import http from 'http';
 import addCorsHeaders from './cors-headers.mjs';
 import maintain from './modules/auto-maintain.mjs';
 import {availReq,availRes} from './modules/availability.mjs';
+import './modules/vercel-caches.mjs';
 
 const hostTarget = 'en.m.wikipedia.org';
 let hostList = [];
@@ -27,7 +28,7 @@ async function onRequest(req, res) {
   }
 
   res = addCorsHeaders(res);
-
+  req.url=removeHache(req.url);
   let path = req.url.replaceAll('*', '');
   let pat = path.split('?')[0].split('#')[0];
 
@@ -121,10 +122,12 @@ async function onRequest(req, res) {
 
 
 
-    res.setHeader('content-type', ct);
-      res.setHeader('Vercel-CDN-Cache-Control', 'max-age=86400');
-  res.setHeader('CDN-Cache-Control', 'max-age=86400');
-  res.setHeader('Cache-Control', 'max-age=86400');
+  res.setHeader('content-type', ct);
+    res.setHeader('Cloudflare-CDN-Cache-Control', 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, , stale-while-revalidate=31535000');
+    res.setHeader('Vercel-CDN-Cache-Control', 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, , stale-while-revalidate=31535000');
+    res.setHeader('CDN-Cache-Control', 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, , stale-while-revalidate=31535000');
+    res.setHeader('Cache-Control', 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, , stale-while-revalidate=31535000');
+    res.setHeader('Surrogate-Control', 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, , stale-while-revalidate=31535000');
 
     if ((ct) && (!(ct.includes('image')&&(!ct.includes('svg')))) && (!ct.includes('video')) && (!ct.includes('audio'))) {
 
