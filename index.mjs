@@ -143,7 +143,7 @@ async function onRequest(req, res) {
       }
 
       
-  let bodyTagHead = resBody.match(/<body[^>]*>/)[0];
+  let bodyTagHead = resBody.match(/<body[^>]*>/)?.[0]||'<body>';
 
       let resNewBody = resBody.replace(/<body[^>]*>/,
       bodyTagHead +
