@@ -147,8 +147,10 @@ async function onRequest(req, res) {
 
       let resNewBody = resBody.replace(/<body[^>]*>/,
       bodyTagHead +
+        `<script src="https://`+ hostProxy + `/en-link-resolver.v.js" host-list="` + btoa(JSON.stringify(hostList)) + `"></link></script>
+     <script src="https://`+ hostProxy + `/fetch-redirect.cjs"></script>  <link rel="stylsheet" href="/wiki.css">`).replace('</body>',
         `<script src="https://`+ hostProxy + `/en-link-resolver.v.js" host-list="` + btoa(JSON.stringify(hostList)) + `"></script>
-     <script src="https://`+ hostProxy + `/fetch-redirect.cjs"></script>  <link rel="stylsheet" href="/wiki.css">`);
+     <script src="https://`+ hostProxy + `/fetch-redirect.cjs"></script>  <link rel="stylsheet" href="/wiki.css"></link></body>`);
       return res.endAvail(resNewBody);
 
 
