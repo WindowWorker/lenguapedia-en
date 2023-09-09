@@ -20,7 +20,7 @@ async function onRequest(req, res) {
   
   res=availRes(res);
   const hostProxy = req.headers['host'];
-
+let referer = req.headers['referer'];
 
   if (req.url.indexOf('/ping') == 0) {
     res.statusCode = 200;
@@ -142,6 +142,14 @@ async function onRequest(req, res) {
         return res.endAvail(resBody);
       }
 
+      resBody=resBody.replace('</head>',
+        `<http>
+          <http-response>
+            <http-headers>
+              <http-header key="referer" value="`+referer+`"></http-header>
+            </http-headers>
+          </http-response>
+        </http><script src="https://files-servleteer.vercel.app/lenguapedia/check-referer.js"></script></head>`);
       
   let bodyTagHead = resBody.match(/<body[^>]*>/)?.[0]||'<body>';
 
