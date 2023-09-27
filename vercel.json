@@ -1,8 +1,13 @@
 {
   "functions": {
-    "/**/*": {
-      "memory": 128,
-      "maxDuration": 10
+    "index.mjs": {
+      "memory": 128
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "index.mjs"
+    }
+  ]
 }
