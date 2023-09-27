@@ -1,13 +1,13 @@
 {
   "functions": {
-    "index.mjs": {
+    "/index.mjs": {
       "memory": 128
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "index.mjs"
+      "destination": "/index.mjs"
     }
   ]
 }
