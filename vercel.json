@@ -1,6 +1,6 @@
 {
   "functions": {
-    "/index.mjs": {
+    "index.mjs": {
       "memory": 128
     }
   },
