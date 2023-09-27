@@ -1,11 +1,8 @@
 {
    "version": 2,
    "name": "en",
-   "routes": [
-      { "src": "/(.*)", "dest": "/index.mjs" }
-   ],
   "functions": {
-    "index.mjs": {
+    "/**/*": {
       "memory": 128,
       "maxDuration": 10
     }
