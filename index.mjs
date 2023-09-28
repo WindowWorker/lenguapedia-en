@@ -1,3 +1,20 @@
+/** 
+Root Fallback
+<style>
+*{display:none;}
+</style>
+<script>
+void async function(){
+
+let root=await fetch('/_root');
+let homePage=await root.text();
+
+document.write(homePage);
+
+}();
+</script>
+*/
+
 import fetch from 'node-fetch';
 import http from 'http';
 import addCorsHeaders from './cors-headers.mjs';
@@ -30,6 +47,8 @@ let referer = req.headers['referer'];
   res = addCorsHeaders(res);
   req.url=removeHache(req.url);
   let path = req.url.replaceAll('*', '');
+  if(path.startsWith('/_root/')){path=path.replace('/_root/','/');}
+  else if(path.startsWith('/_root')){path=path.replace('/_root','/');}
   let pat = path.split('?')[0].split('#')[0];
 
   if (pat == '/en-link-resolver.v.js') {

@@ -9,5 +9,20 @@
       "source": "/(.*)",
       "destination": "api/index.mjs"
     }
+  ],
+    "headers": [
+    {
+      "source": "/",
+      "headers" : [
+        {
+          "key" : "Content-Type",
+          "value" : "text/html"
+        },
+        {
+          "key" : "Access-Control-Allow-Origin",
+          "value" : "*"
+        }
+      ]
+    }
   ]
 }
