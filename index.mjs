@@ -21,6 +21,7 @@ import addCorsHeaders from './cors-headers.mjs';
 import maintain from './modules/auto-maintain.mjs';
 import {availReq,availRes} from './modules/availability.mjs';
 import './modules/vercel-caches.mjs';
+import './modules/serverlessCache.mjs';
 
 const hostTarget = 'en.m.wikipedia.org';
 let hostList = [];
@@ -36,8 +37,22 @@ async function onRequest(req, res) {
   res.socket.setNoDelay();
   
   res=availRes(res);
+
+
+let cacheKey=serverlessCache.generateCacheKey(req);
+let cacheVal=await serverlessCache.matchClone(cacheKey);
+let response;
+let referer;
+  //console.log(cacheKey,cacheVal);
+  if(cacheVal){
+  //console.log(cacheKey,cacheVal);
+    response=cacheVal;
+    
+  }
+
+  
   const hostProxy = req.headers['host'];
-let referer = req.headers['referer'];
+ referer = req.headers['referer'];
 
   if (req.url.indexOf('/ping') == 0) {
     res.statusCode = 200;
@@ -79,9 +94,6 @@ let referer = req.headers['referer'];
   }
 
 
-  req.headers.host = hostTarget;
-  req.headers.referer = hostTarget;
-
 
   /* start reading the body of the request*/
   let bdy = "";
@@ -89,6 +101,12 @@ let referer = req.headers['referer'];
     bdy += req.read();
   });
   req.on('end', async function() {
+    if(!cacheVal){
+
+      
+  req.headers.host = hostTarget;
+  req.headers.referer = hostTarget;
+
     /* finish reading the body of the request*/
 
     /* start copying over the other parts of the request */
@@ -107,16 +125,20 @@ let referer = req.headers['referer'];
     /* finish copying over the other parts of the request */
 
     /* fetch from your desired target */
-    let response = await fetch('https://' + hostTarget + path, options);
+    response = await fetch('https://' + hostTarget + path, options);
 
     /* if there is a problem try redirecting to the original */
-    if (response.status > 399) {
+    if (response?.status&&(response?.status > 399) ){
       res.setHeader('location', 'https://' + hostTarget + path);
       res.statusCode = 302;
       return res.endAvail();
     }
 
-
+    if(response?.status&&(response?.status>199)&&(response?.status<300)){
+    response=await serverlessCache.putClone(cacheKey,response);
+      //console.log(serverlessCache);
+  }
+  }
     /* copy over response headers  */
 
     for (let [key, value] of response.headers.entries()) {
@@ -152,7 +174,13 @@ let referer = req.headers['referer'];
 
 
       /* Copy over target response and return */
-      let resBody = await response.text();
+      let resBody = response.fullBody;
+      if(!resBody){
+        resBody=await response.text();
+      }else{
+        const decoder = new TextDecoder();
+        resBody=decoder.decode(resBody);
+      }
       if (ct.toLowerCase().includes('javascript')) {
         let hostList_length = hostList.length;
         for (let i = 0; i < hostList_length; i++) {
@@ -182,7 +210,12 @@ let referer = req.headers['referer'];
 
 
     } else {
-    let resBody = Buffer.from(await(response).arrayBuffer());
+       let resBody ;
+      if(response.fullBody){
+         resBody = Buffer.from(response.fullBody);
+      }else{
+     resBody = Buffer.from(await(response).arrayBuffer());
+      }
     res.setHeader('Content-Type',ct);
     return res.endAvail(resBody);
 
