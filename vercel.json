@@ -23,6 +23,34 @@
           "value" : "*"
         }
       ]
+    },{
+      "source": "/(.*)",
+      "headers" : [
+        {
+          "key" : "Access-Control-Allow-Origin",
+          "value" : "*"
+        },
+        {
+          "key" : "CDN-Cache-Control",
+          "value" : "public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000"
+        },
+        {
+          "key" : "Cache-Control",
+          "value" : "public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000"
+        },
+        {
+          "key" : "Cloudflare-CDN-Cache-Control",
+          "value" : "public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000"
+        },
+        {
+          "key" : "Surrogate-Control",
+          "value" : "public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000"
+        },
+        {
+          "key" : "Vercel-CDN-Cache-Control",
+          "value" : "public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000"
+        }
+      ]
     }
   ]
 }
