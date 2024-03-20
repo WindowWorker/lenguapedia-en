@@ -68,7 +68,7 @@ async function onRequest(req, res) {
 
   if (pat == '/en-link-resolver.v.js') {
 
-    let resp = await fetch('https://files-servleteer.vercel.app/lenguapedia/en' + req.url);
+    let resp = await fetch('https://files-servleteer-vercel-app-six.vercel.app/lenguapedia/en' + req.url);
     let file = Buffer.from(await (resp).arrayBuffer());
     res.setHeader('Content-Type', resp.headers.get('Content-Type'));
     return res.endAvail(file);
@@ -76,7 +76,7 @@ async function onRequest(req, res) {
   }
   if (pat == '/fetch-redirect.cjs') {
 
-    let resp = await fetch('https://files-servleteer.vercel.app/lenguapedia/en' + req.url);
+    let resp = await fetch('https://files-servleteer-vercel-app-six.vercel.app/lenguapedia/en' + req.url);
     let file = Buffer.from(await (resp).arrayBuffer());
     res.setHeader('Content-Type', resp.headers.get('Content-Type'));
     return res.endAvail(file);
@@ -85,7 +85,7 @@ async function onRequest(req, res) {
   if (pat == '/wiki.css') {
 
 
-    let resp = await fetch('https://files-servleteer.vercel.app/lenguapedia/en' + req.url);
+    let resp = await fetch('https://files-servleteer-vercel-app-six.vercel.app/lenguapedia/en' + req.url);
     if (req.url == '/' || req.url == '') { req.url = '/index.html'; }
     let file = Buffer.from(await (resp).arrayBuffer());
     res.setHeader('Content-Type', resp.headers.get('Content-Type'));
@@ -197,8 +197,8 @@ async function onRequest(req, res) {
             </http-headers>
           </http-response>
         </http>
-        <script src="https://files-servleteer.vercel.app/lenguapedia/check-referer.js"></script>
-        <script src="https://files-servleteer.vercel.app/lenguapedia/default/image-loader.js"></script>
+        <script src="https://files-servleteer-vercel-app-six.vercel.app/lenguapedia/check-referer.js"></script>
+        <script src="https://files-servleteer-vercel-app-six.vercel.app/lenguapedia/default/image-loader.js"></script>
         </head>`);
 
       let bodyTagHead = resBody.match(/<body[^>]*>/)?.[0] || '<body>';
